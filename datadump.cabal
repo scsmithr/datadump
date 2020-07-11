@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      Language.Datalog.Program
       Lib
   other-modules:
       Paths_datadump
@@ -32,6 +33,7 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , hspec >=2.7.1
   default-language: Haskell2010
 
 executable datadump-exe
@@ -44,12 +46,14 @@ executable datadump-exe
   build-depends:
       base >=4.7 && <5
     , datadump
+    , hspec >=2.7.1
   default-language: Haskell2010
 
 test-suite datadump-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Language.Datalog.ProgramSpec
       Paths_datadump
   hs-source-dirs:
       test
@@ -57,4 +61,5 @@ test-suite datadump-test
   build-depends:
       base >=4.7 && <5
     , datadump
+    , hspec >=2.7.1
   default-language: Haskell2010
