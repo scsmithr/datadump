@@ -34,6 +34,11 @@ spec = do
         -- they're both ancestors of xerces.
         [ Rule (Atom "query1" [Var "Intermediate"])
                (fmap (Atom "ancestor") [[Sym "xerces", Var "Intermediate"]])
+        -- Query is satisfied by an empty substitution since xerces is an
+        -- ancestor of brooke.
+        , Rule (Atom "query2" []) [Atom "ancestor" [Sym "xerces", Sym "brooke"]]
+        -- Query cannot be satisfied by any substitution.
+        , Rule (Atom "query3" []) [Atom "ancestor" [Sym "brooke", Sym "xerces"]]
         ]
 
   let prog = facts <> rules <> queries
@@ -44,4 +49,10 @@ spec = do
             [ [(Var "Intermediate", Sym "brooke")]
             , [(Var "Intermediate", Sym "damocles")]
             ]
-      (querySubstitutions "query1" prog) `shouldBe` expected
+      (querySubstitutions "query1" prog) `shouldMatchList` expected
+
+    it "returns a single empty substitution when query is satisfied" $ do
+      (querySubstitutions "query2" prog) `shouldBe` [[]]
+
+    it "returns no substitutions if none satisfy query" $ do
+      (querySubstitutions "query3" prog) `shouldBe` []
