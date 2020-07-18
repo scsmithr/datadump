@@ -1,6 +1,4 @@
-{-|
-Logic for a (simple and slow) Datalog program.
--}
+{- | Logic for a (simple and slow) Datalog program. -}
 
 {-# LANGUAGE LambdaCase #-}
 
