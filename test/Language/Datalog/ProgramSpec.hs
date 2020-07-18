@@ -49,10 +49,10 @@ spec = do
             [ [(Var "Intermediate", Sym "brooke")]
             , [(Var "Intermediate", Sym "damocles")]
             ]
-      (querySubstitutions "query1" prog) `shouldMatchList` expected
+      querySubstitutions "query1" prog `shouldMatchList` expected
 
     it "returns a single empty substitution when query is satisfied" $ do
-      (querySubstitutions "query2" prog) `shouldBe` [[]]
+      querySubstitutions "query2" prog `shouldBe` [[]]
 
     it "returns no substitutions if none satisfy query" $ do
-      (querySubstitutions "query3" prog) `shouldBe` []
+      querySubstitutions "query3" prog `shouldBe` []

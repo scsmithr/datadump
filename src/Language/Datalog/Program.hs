@@ -15,7 +15,6 @@ module Language.Datalog.Program
   )
 where
 
-import           Prelude                 hiding ( head )
 import           Data.Function                  ( fix )
 import           Data.List                      ( nub )
 import           Data.Maybe                     ( fromMaybe
@@ -26,10 +25,10 @@ data Term = Var String
           | Sym String deriving (Eq, Show)
 
 data Atom = Atom { symbol :: String
-                 , terms :: [Term] } deriving Eq
+                 , atomTerms :: [Term] } deriving Eq
 
-data Rule = Rule { head :: Atom
-                 , body :: [Atom] }
+data Rule = Rule { ruleHead :: Atom
+                 , ruleBody :: [Atom] }
 
 type Program = [Rule]
 
@@ -42,7 +41,7 @@ emptySubstitution = []
 
 -- Substitute all variable terms with its associated substitution.
 substitute :: Atom -> Substitution -> Atom
-substitute atom sub = atom { terms = map subTerm (terms atom) }
+substitute atom sub = atom { atomTerms = map subTerm (atomTerms atom) }
  where
   subTerm sym@Sym{} = sym
   subTerm var@Var{} = fromMaybe var (lookup var sub)
@@ -90,7 +89,7 @@ isRangeRestricted :: Rule -> Bool
 isRangeRestricted (Rule head body) = isSubsetOf (vars head)
                                                 (concatMap vars body)
  where
-  isSubsetOf as bs = all (flip (elem) bs) as
+  isSubsetOf as bs = all (`elem` bs) as
   vars (Atom _ terms) = nub $ filter
     (\case
       Var{} -> True
@@ -103,14 +102,14 @@ solve rules | all isRangeRestricted rules = fix step []
             | otherwise = error "Program not range restricted."
  where
   step :: (KnowledgeBase -> KnowledgeBase) -> (KnowledgeBase -> KnowledgeBase)
-  step f curr | next <- (immediateConsequence rules curr) =
+  step f curr | next <- immediateConsequence rules curr =
     if curr == next then curr else f next
 
 querySubstitutions :: String -> Program -> [Substitution]
-querySubstitutions querySym prog = case (terms . head <$> queryRules) of
+querySubstitutions querySym prog = case atomTerms . ruleHead <$> queryRules of
   [queryVars] -> zip queryVars <$> relevantSyms
   []          -> error "Query symbol does not exist."
   _           -> error "Query symbol has multiple clauses."
  where
-  relevantSyms = terms <$> (filter ((== querySym) . symbol) $ solve prog)
-  queryRules   = filter ((== querySym) . symbol . head) prog
+  relevantSyms = atomTerms <$> filter ((== querySym) . symbol) (solve prog)
+  queryRules   = filter ((== querySym) . symbol . ruleHead) prog
