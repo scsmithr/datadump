@@ -11,7 +11,7 @@ import           Control.Monad.Reader
 
 data Env = Env
   { envLog :: !(String -> IO ())
-  , dataDir :: !FilePath
+  , envDataDir :: !FilePath
   }
 
 class HasLog a where
