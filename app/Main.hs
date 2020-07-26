@@ -17,8 +17,10 @@ main = do
 
 run :: AppM ()
 run = do
-  let db :: Database Int
-      db = insertTuple mkEmptyDatabase (RelationName "test") [0, 1, 2, 3, 4]
+  let
+    db :: Database Int
+    db =
+      insertTuple mkEmptyDatabase (RelationName "test") (Tuple [0, 1, 2, 3, 4])
   let p = "test-file123"
   _ <- persist db p
 
