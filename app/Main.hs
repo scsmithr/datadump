@@ -4,14 +4,11 @@ import           Lib.Capability.Persist
 import           Control.Monad.IO.Class         ( liftIO )
 import           Data.ByteString.Lazy          as B
 import           Data.ByteString.Builder       as BU
+import           Lib.Data.Database
 import           Lib.App.Env                    ( Env(..) )
 import           Lib.App.Monad                  ( AppM(..)
                                                 , runAppM
                                                 )
-
-instance Serialize B.ByteString where
-  encode = id
-  decode = Right
 
 main :: IO ()
 main = do
@@ -20,11 +17,12 @@ main = do
 
 run :: AppM ()
 run = do
-  let s = BU.toLazyByteString $ BU.stringUtf8 "hello world"
+  let db :: Database Int
+      db = insertTuple mkEmptyDatabase (RelationName "test") [0, 1, 2, 3, 4]
   let p = "test-file123"
-  _ <- persist s p
+  _ <- persist db p
 
-  let loader :: AppM (Either String B.ByteString)
+  let loader :: AppM (Either String (Database Int))
       loader = load p
   v <- loader
 

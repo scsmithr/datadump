@@ -6,11 +6,7 @@ module Lib.Capability.Persist
 where
 
 import           Data.ByteString.Lazy           ( ByteString )
-
--- | Ability to (de)serialize values of type a.
-class Serialize a where
-  encode :: a -> ByteString
-  decode :: ByteString -> Either String a
+import           Data.Serialize                 ( Serialize )
 
 -- | An identifier for persistent data.
 type PersistId = String

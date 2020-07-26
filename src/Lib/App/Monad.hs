@@ -9,9 +9,12 @@ where
 
 import           Control.Monad.Reader
 import qualified Data.ByteString.Lazy          as B
+import           Data.Serialize                 ( Serialize
+                                                , encodeLazy
+                                                , decodeLazy
+                                                )
 import           Lib.App.Env                    ( Env(..) )
 import           Lib.Capability.Persist         ( Persist(..)
-                                                , Serialize(..)
                                                 , PersistId
                                                 )
 import           System.FilePath.Posix          ( combine )
@@ -38,7 +41,7 @@ writeToDataDir
   :: Serialize a => FilePath -> a -> PersistId -> IO (Either String ())
 writeToDataDir dir obj p = do
   let path = combine dir p
-  let bs   = encode obj
+  let bs   = encodeLazy obj
   B.writeFile path bs
   pure $ Right ()
 
@@ -48,4 +51,4 @@ readFromDataDir :: Serialize a => FilePath -> PersistId -> IO (Either String a)
 readFromDataDir dir p = do
   let path = combine dir p
   bs <- B.readFile path
-  pure $ decode bs
+  pure $ decodeLazy bs
