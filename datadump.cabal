@@ -31,6 +31,7 @@ library
       Lib.App.Env
       Lib.App.Monad
       Lib.Capability.Persist
+      Lib.Data.Database
   other-modules:
       Paths_datadump
   hs-source-dirs:
@@ -38,6 +39,8 @@ library
   build-depends:
       base >=4.7 && <5
     , bytestring >=0.10.10.0
+    , cereal >=0.5.8
+    , containers >=0.6.2.1
     , filepath >=1.4.2.1
     , hspec >=2.7.1
     , mtl >=2.2.2
@@ -53,6 +56,8 @@ executable datadump-exe
   build-depends:
       base >=4.7 && <5
     , bytestring >=0.10.10.0
+    , cereal >=0.5.8
+    , containers >=0.6.2.1
     , datadump
     , filepath >=1.4.2.1
     , hspec >=2.7.1
@@ -72,6 +77,8 @@ test-suite datadump-test
   build-depends:
       base >=4.7 && <5
     , bytestring >=0.10.10.0
+    , cereal >=0.5.8
+    , containers >=0.6.2.1
     , datadump
     , filepath >=1.4.2.1
     , hspec >=2.7.1
