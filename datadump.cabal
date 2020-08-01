@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       Language.Datalog.Program
+      Language.Datalog.Relation
       Language.FiniteState
       Lib
       Lib.App.Env
