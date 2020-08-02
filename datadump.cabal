@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      Language.Datalog.Context
       Language.Datalog.Program
       Language.Datalog.Relation
       Language.FiniteState
@@ -71,6 +72,7 @@ test-suite datadump-test
   main-is: Spec.hs
   other-modules:
       Language.Datalog.ProgramSpec
+      Language.Datalog.RelationSpec
       Language.FiniteStateSpec
       Paths_datadump
   hs-source-dirs:
