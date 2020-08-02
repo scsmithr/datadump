@@ -62,10 +62,11 @@ joinRelations
   -> Relation (a, b)
   -> Relation (a, c)
   -> Relation (a, d)
-joinRelations logic (Relation s1) (Relation s2) = fromTuples ts
+joinRelations logic (Relation s1) (Relation s2) = fromTuples fts
  where
   cart = cartesianProd (S.elems s1) (S.elems s2)
   ts   = map (uncurry $ joinTuples logic) cart
+  fts  = filter (/= Tuple []) ts
 
 data Variable a = Variable
                   { vrStable :: [Relation a]
